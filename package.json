@@ -3,7 +3,11 @@
     "dev": "bun run --hot src/index.ts"
   },
   "dependencies": {
+    "@prisma/client": "5.3.1",
+    "@solana/web3.js": "^1.78.5",
     "@types/node": "^20.6.1",
+    "bs58": "^5.0.0",
+    "commander": "^11.0.0",
     "hono": "^3.6.1",
     "prisma": "^5.3.1"
   },

@@ -9,3 +9,14 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Players {
+  wallet String @id
+  rent   Int
+}
+
+model Structures {
+  id       String @id
+  wallet   String
+  protocol String
+}
