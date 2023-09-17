@@ -14,9 +14,3 @@ model Players {
   wallet String @id
   rent   Int
 }
-
-model Structures {
-  id       String @id
-  wallet   String
-  protocol String
-}

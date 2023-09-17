@@ -5,17 +5,20 @@ export function bubblegum() {
   ws.addEventListener("open", async (evt) => {
     console.log("Creating a stream for Bubblegum Messages...");
     // Send subscribe message
-    ws.send(JSON.stringify({
-      "chain": "solana",
-      "programId": "",
-      "level": "processed",
-      "type":"account",
-      "entityName": "*",
-      "apiKey": process.env.CARPOOL_KEY;
-    }));
+    ws.send(
+      JSON.stringify({
+        chain: "solana",
+        programId: "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY",
+        level: "processed",
+        type: "account",
+        entityName: "*",
+        apiKey: process.env.CARPOOL_KEY,
+      })
+    );
   });
 
   ws.addEventListener("close", async (evt) => {
+    console.log("Bubblegum Close EVT: ", evt);
     console.log("Bubblegum socket closed, attempting reconnect in 1 second...");
     setTimeout(function () {
       bubblegum();
@@ -23,6 +26,7 @@ export function bubblegum() {
   });
 
   ws.addEventListener("error", async (evt) => {
+    console.log("Bubblegum Error EVT: ", evt);
     console.log(
       "Bubblegum socket errored, attempting reconnect in 1 second..."
     );
