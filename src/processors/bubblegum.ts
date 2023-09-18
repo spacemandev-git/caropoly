@@ -1,41 +1,33 @@
 import { CARPOOL_URL } from "./constants";
+import { io } from "socket.io-client";
 
 export function bubblegum() {
-  const ws = new WebSocket(CARPOOL_URL);
-  ws.addEventListener("open", async (evt) => {
+  const socket = io(CARPOOL_URL, { transports: ["websocket"] });
+
+  socket.on("connect", () => {
     console.log("Creating a stream for Bubblegum Messages...");
-    // Send subscribe message
-    ws.send(
-      JSON.stringify({
-        chain: "solana",
-        programId: "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY",
-        level: "processed",
-        type: "account",
-        entityName: "*",
-        apiKey: process.env.CARPOOL_KEY,
-      })
-    );
+    // Send subscribe messages
+    socket.emit("subscribe", {
+      chain: "solana",
+      programId: "BGUMAp9Gq7iTEuizy4pqaxsTyUCBK68MDfK752saRPUY",
+      level: "processed",
+      type: "instruction", // "instruction" or "account" or "event"
+      entityName: "*",
+      apiKey: process.env.CARPOOL_KEY,
+    });
   });
 
-  ws.addEventListener("close", async (evt) => {
-    console.log("Bubblegum Close EVT: ", evt);
-    console.log("Bubblegum socket closed, attempting reconnect in 1 second...");
-    setTimeout(function () {
-      bubblegum();
-    }, 1000);
-  });
-
-  ws.addEventListener("error", async (evt) => {
-    console.log("Bubblegum Error EVT: ", evt);
+  socket.on("connect_error", (err) => {
+    console.log(err.message);
     console.log(
       "Bubblegum socket errored, attempting reconnect in 1 second..."
     );
-    setTimeout(function () {
-      bubblegum();
+    setTimeout(() => {
+      socket.connect();
     }, 1000);
   });
 
-  ws.addEventListener("message", async (evt) => {
-    console.log(evt);
+  socket.on("data", async (data) => {
+    console.log(data);
   });
 }

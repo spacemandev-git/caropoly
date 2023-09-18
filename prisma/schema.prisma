@@ -14,3 +14,20 @@ model Players {
   wallet String @id
   rent   Int
 }
+
+model Targets {
+  id            String @id @default(uuid())
+  owner         String
+  programId     String
+  instruction   String
+  targetType    String
+  targetAddress String
+}
+
+model PendingTargets {
+  id          String @id @default(uuid())
+  owner       String
+  programId   String
+  instruction String
+  targetType  String
+}
